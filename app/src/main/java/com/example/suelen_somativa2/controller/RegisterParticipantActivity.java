@@ -24,6 +24,9 @@ public class RegisterParticipantActivity extends AppCompatActivity {
         nomeInput = findViewById(R.id.nomeInput);
         telefoneInput = findViewById(R.id.telefoneInput);
         Button enviarBtn = findViewById(R.id.enviarCadastroButton);
+        Button backButton = findViewById(R.id.voltarListButton);
+
+        backButton.setOnClickListener(v -> finish());
 
         enviarBtn.setOnClickListener(v -> {
             String nome = nomeInput.getText().toString().trim();

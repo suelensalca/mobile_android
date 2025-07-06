@@ -66,6 +66,7 @@ public class EventListActivity extends AppCompatActivity {
         vagasTextView = findViewById(R.id.vagasTextView);
         Button inscreverBtn = findViewById(R.id.enviarButton);
         ListView inscritosList = findViewById(R.id.listaInscritos);
+        Button voltarBtn = findViewById(R.id.voltarButton);
 
         Intent intent = getIntent();
         String titulo = intent.getStringExtra("titulo");
@@ -85,6 +86,13 @@ public class EventListActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "Não há vagas disponíveis", Toast.LENGTH_SHORT).show();
             }
+        });
+
+        voltarBtn.setOnClickListener(v -> {
+            Intent intentVoltar = new Intent(EventListActivity.this, GalleryActivity.class);
+            intentVoltar.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intentVoltar);
+            finish();
         });
     }
 
