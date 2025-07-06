@@ -6,7 +6,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.suelen_somativa2.R;
@@ -19,8 +22,23 @@ import java.util.List;
 public class EventListActivity extends AppCompatActivity {
     private int vagasRestantes;
     private TextView vagasTextView;
-    private List<String> inscritos = new ArrayList<>();
-    private ArrayAdapter<String> adapter;
+    private List<Participant> inscritos = new ArrayList<>();
+    private ParticipantAdapter adapter;
+
+    private final ActivityResultLauncher<Intent> launcher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    String nome = result.getData().getStringExtra("nome");
+                    String telefone = result.getData().getStringExtra("telefone");
+
+                    if (nome != null && telefone != null) {
+                        inscritos.add(new Participant(nome, telefone));
+                        adapter.notifyDataSetChanged();
+                        vagasRestantes--;
+                        atualizarVagas();
+                    }
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,23 +58,26 @@ public class EventListActivity extends AppCompatActivity {
 
         tituloView.setText(titulo);
         dataHoraView.setText(dataHora);
-        vagasTextView.setText("Vagas: " + vagasRestantes);
+        atualizarVagas();
 
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, inscritos);
-        inscritosList.setAdapter(adapter);
-
-        List<Participant> inscritos = new ArrayList<>();
         inscritos.add(new Participant("Ednéia Silva", "(11) 99999-5678"));
         inscritos.add(new Participant("Gerson Silva", "(11) 99999-5678"));
         inscritos.add(new Participant("Ermenegildo Oliveira", "(21) 99999-5432"));
 
-        ParticipantAdapter adapter = new ParticipantAdapter(this, inscritos);
+        adapter = new ParticipantAdapter(this, inscritos);
         inscritosList.setAdapter(adapter);
 
         inscreverBtn.setOnClickListener(v -> {
-            Intent nextIntent = new Intent(EventListActivity.this, RegisterParticipantActivity.class);
-            startActivity(nextIntent);
+            if (vagasRestantes > 0) {
+                launcher.launch(new Intent(this, RegisterParticipantActivity.class));
+            } else {
+                Toast.makeText(this, "Não há vagas disponíveis", Toast.LENGTH_SHORT).show();
+            }
         });
+    }
+
+    private void atualizarVagas() {
+        vagasTextView.setText("Vagas: " + vagasRestantes);
     }
 
 }

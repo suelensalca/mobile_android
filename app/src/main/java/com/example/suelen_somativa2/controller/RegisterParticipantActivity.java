@@ -1,5 +1,6 @@
 package com.example.suelen_somativa2.controller;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,6 +31,11 @@ public class RegisterParticipantActivity extends AppCompatActivity {
                 Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show();
                 return;
             }
+
+            Intent result = new Intent();
+            result.putExtra("nome", nome);
+            result.putExtra("telefone", telefone);
+            setResult(RESULT_OK, result);
 
             Toast.makeText(this, "Inscrição enviada!", Toast.LENGTH_SHORT).show();
             finish();

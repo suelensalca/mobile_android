@@ -14,8 +14,6 @@ public class DataModel {
         userList.add(new UserDetails("casa2", "senha2"));
         userList.add(new UserDetails("casa3", "senha3"));
         userList.add(new UserDetails("casa4", "senha4"));
-        userList.add(new UserDetails("casa5", "senha5"));
-        userList.add(new UserDetails("casa6", "senha6"));
     }
 
     public static DataModel getInstance() {
