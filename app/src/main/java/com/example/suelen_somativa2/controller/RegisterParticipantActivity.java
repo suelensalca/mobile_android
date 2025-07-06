@@ -9,6 +9,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.suelen_somativa2.R;
+import com.example.suelen_somativa2.model.Participant;
+import com.example.suelen_somativa2.model.ParticipantDatabase;
 
 public class RegisterParticipantActivity extends AppCompatActivity {
 
@@ -31,6 +33,10 @@ public class RegisterParticipantActivity extends AppCompatActivity {
                 Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show();
                 return;
             }
+
+            Participant novo = new Participant(nome, telefone);
+            ParticipantDatabase db = new ParticipantDatabase(this);
+            db.createParticipantInDB(novo);
 
             Intent result = new Intent();
             result.putExtra("nome", nome);

@@ -1,6 +1,7 @@
 package com.example.suelen_somativa2.controller;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.suelen_somativa2.R;
 import com.example.suelen_somativa2.adapter.ParticipantAdapter;
 import com.example.suelen_somativa2.model.Participant;
+import com.example.suelen_somativa2.model.ParticipantDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,28 +24,42 @@ import java.util.List;
 public class EventListActivity extends AppCompatActivity {
     private int vagasRestantes;
     private TextView vagasTextView;
-    private List<Participant> inscritos = new ArrayList<>();
+    private ParticipantDatabase db;
+    private List<Participant> inscritos;
     private ParticipantAdapter adapter;
 
     private final ActivityResultLauncher<Intent> launcher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                    String nome = result.getData().getStringExtra("nome");
-                    String telefone = result.getData().getStringExtra("telefone");
-
-                    if (nome != null && telefone != null) {
-                        inscritos.add(new Participant(nome, telefone));
-                        adapter.notifyDataSetChanged();
-                        vagasRestantes--;
-                        atualizarVagas();
-                    }
+                    inscritos.clear();
+                    inscritos.addAll(db.getParticipantFromDB());
+                    adapter.notifyDataSetChanged();
+                    vagasRestantes--;
+                    atualizarVagas();
                 }
             });
+
+    private void addInitialParticipants() {
+        SharedPreferences prefs = getSharedPreferences("app_prefs", MODE_PRIVATE);
+        boolean hasValues = prefs.getBoolean("dados_iniciais_inseridos", false);
+
+        if (!hasValues) {
+            db.createParticipantInDB(new Participant("Ednéia Silva", "(11) 99999-5678"));
+            db.createParticipantInDB(new Participant("Gerson Silva", "(11) 99999-5678"));
+            db.createParticipantInDB(new Participant("Ermenegildo Oliveira", "(21) 99999-5432"));
+
+            prefs.edit().putBoolean("dados_iniciais_inseridos", true).apply();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_eventlist);
+
+        db = new ParticipantDatabase(this);
+        addInitialParticipants();
+        inscritos = db.getParticipantFromDB();
 
         TextView tituloView = findViewById(R.id.tituloTextView);
         TextView dataHoraView = findViewById(R.id.dataHoraTextView);
@@ -59,10 +75,6 @@ public class EventListActivity extends AppCompatActivity {
         tituloView.setText(titulo);
         dataHoraView.setText(dataHora);
         atualizarVagas();
-
-        inscritos.add(new Participant("Ednéia Silva", "(11) 99999-5678"));
-        inscritos.add(new Participant("Gerson Silva", "(11) 99999-5678"));
-        inscritos.add(new Participant("Ermenegildo Oliveira", "(21) 99999-5432"));
 
         adapter = new ParticipantAdapter(this, inscritos);
         inscritosList.setAdapter(adapter);
