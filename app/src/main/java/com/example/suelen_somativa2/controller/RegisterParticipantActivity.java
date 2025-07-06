@@ -46,7 +46,7 @@ public class RegisterParticipantActivity extends AppCompatActivity {
             result.putExtra("telefone", telefone);
             setResult(RESULT_OK, result);
 
-            Toast.makeText(this, "Inscrição enviada!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Participação confirmada!", Toast.LENGTH_SHORT).show();
             finish();
         });
     }
