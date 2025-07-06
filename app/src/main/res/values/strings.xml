@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">suelen_somativa2</string>
+    <string name="user_logged">usuário logado!</string>
+    <string name="error">erro</string>
+    <string name="wrong_user">usuário ou senha incorretos</string>
+    <string name="login">login</string>
+    <string name="password">password</string>
+    <string name="login_title">EventClick</string>
+    <string name="username">username</string>
+    <string name="vagas">Vagas: </string>
+    <string name="sign">participar</string>
+    <string name="inscritos">Inscritos:</string>
+</resources>
