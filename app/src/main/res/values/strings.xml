@@ -10,4 +10,9 @@
     <string name="vagas">Vagas: </string>
     <string name="sign">participar</string>
     <string name="inscritos">Inscritos:</string>
+    <string name="nome">Nome</string>
+    <string name="telefone">Telefone</string>
+    <string name="register">Participe do evento!</string>
+    <string name="add_name">adicione o nome e telefone de quem vai participar</string>
+    <string name="enviar">enviar</string>
 </resources>

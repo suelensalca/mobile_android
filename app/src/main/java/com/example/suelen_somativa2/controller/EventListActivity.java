@@ -52,6 +52,11 @@ public class EventListActivity extends AppCompatActivity {
 
         ParticipantAdapter adapter = new ParticipantAdapter(this, inscritos);
         inscritosList.setAdapter(adapter);
+
+        inscreverBtn.setOnClickListener(v -> {
+            Intent nextIntent = new Intent(EventListActivity.this, RegisterParticipantActivity.class);
+            startActivity(nextIntent);
+        });
     }
 
 }

@@ -19,6 +19,9 @@
             android:name=".controller.EventListActivity"
             android:exported="true" />
         <activity
+            android:name=".controller.RegisterParticipantActivity"
+            android:exported="true" />
+        <activity
             android:name=".controller.MainActivity"
             android:exported="true">
             <intent-filter>
